@@ -13,6 +13,7 @@ export interface SpotifyItem
   duration_ms: number,
   href: string,
   name: string,
+  preview_url: string,
   external_urls: {
     spotify: string
   }

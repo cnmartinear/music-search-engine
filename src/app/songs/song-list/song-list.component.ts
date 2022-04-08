@@ -16,6 +16,7 @@ declare function loadClient(): any;
 export class SongListComponent implements OnInit {
   query: string=""
 
+  audioPlayer! : HTMLAudioElement;
   ytSearchResult!: YouTubeSearchResult
   spSearchResult!: SpotifySearchResult
   npSearchResult! : NapsterSearchResult
@@ -23,8 +24,12 @@ export class SongListComponent implements OnInit {
   sub!: Subscription
 
   private _musicService;
+  private _spotifyService;
+  private _napsterService;
   constructor(musicService: MusicService) {
     this._musicService = musicService;
+    this._spotifyService = musicService;
+    this._napsterService = musicService;
   }
 
   ngOnInit(): void {
@@ -32,8 +37,12 @@ export class SongListComponent implements OnInit {
   }
 
   search(): void {
+    this.searchYoutube();
+    this.searchSpotify();
+    this.searchNapster();
+  }
 
-
+  searchYoutube(): void {
     this._musicService.getYouTubeSearchResult(this.query).subscribe({
       next: (result) => {
         this.ytSearchResult = result;
@@ -41,8 +50,10 @@ export class SongListComponent implements OnInit {
       },
       error: (err) => (this.errorMessage = err),
     });
+  }
 
-    this._musicService.getSpotifySearchResult(this.query).subscribe({
+  searchSpotify() : void{
+    this._spotifyService.getSpotifySearchResult(this.query).subscribe({
       next: (result) => {
         this.spSearchResult = result;
         console.log(this.spSearchResult);
@@ -50,8 +61,10 @@ export class SongListComponent implements OnInit {
       },
       error: (err) => (this.errorMessage = err),
     });
+  }
 
-    this._musicService.getNapsterSearchResult(this.query).subscribe({
+  searchNapster() : void{
+    this._napsterService.getNapsterSearchResult(this.query).subscribe({
       next: (result) => {
         this.npSearchResult = result;
         console.log(this.npSearchResult);
@@ -59,6 +72,18 @@ export class SongListComponent implements OnInit {
       },
       error: (err) => (this.errorMessage = err),
     });
+  }
+
+  playAudio(previewLink:string) : void{
+    if (this.audioPlayer == undefined || this.audioPlayer.paused){
+      this.audioPlayer = new Audio();
+      this.audioPlayer.src = previewLink;
+      this.audioPlayer.load();
+      this.audioPlayer.play();
+    }
+    else{
+      this.audioPlayer.pause();
+    }
   }
 
   ngOnDestroy(): void {

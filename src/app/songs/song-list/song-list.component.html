@@ -109,6 +109,7 @@
               <th>Length</th>
               <th>Album</th>
               <th>Date Released</th>
+              <th>Preview</th>
             </tr>
           </thead>
           <tbody>
@@ -119,6 +120,8 @@
               <td>{{i.duration_ms | date:'mm:ss':'UTC'}}</td>
               <td>{{i.album.name}}</td>
               <td>{{i.album.release_date | date }}</td>
+              <td *ngIf="i.preview_url"><img id="spotifyPreview" src="/assets/images/spotify-play-icon.png" style="width:30px" cursor="pointer" (click)="playAudio(i.preview_url)">
+              </td>
             </tr>
           </tbody>
         </table>
