@@ -75,14 +75,28 @@ export class SongListComponent implements OnInit {
   }
 
   playAudio(previewLink:string) : void{
-    if (this.audioPlayer == undefined || this.audioPlayer.paused){
+    if (this.audioPlayer == undefined){
       this.audioPlayer = new Audio();
       this.audioPlayer.src = previewLink;
       this.audioPlayer.load();
       this.audioPlayer.play();
     }
+    else if (this.audioPlayer.paused){
+      if (this.audioPlayer.src != previewLink){
+        this.audioPlayer.src = previewLink;
+        this.audioPlayer.load();
+        this.audioPlayer.play();
+      }
+      else this.audioPlayer.play();
+    }
     else{
-      this.audioPlayer.pause();
+      if (this.audioPlayer.src != previewLink){
+        this.audioPlayer.src = previewLink;
+        this.audioPlayer.load();
+        this.audioPlayer.play();
+      }
+      else
+        this.audioPlayer.pause();
     }
   }
 

@@ -120,7 +120,10 @@
               <td>{{i.duration_ms | date:'mm:ss':'UTC'}}</td>
               <td>{{i.album.name}}</td>
               <td>{{i.album.release_date | date }}</td>
-              <td *ngIf="i.preview_url"><img id="spotifyPreview" src="/assets/images/spotify-play-icon.png" style="width:30px" cursor="pointer" (click)="playAudio(i.preview_url)">
+              <td style="text-align:center">
+                <span *ngIf="i.preview_url">
+                  <img src="/assets/images/play-icon.png" style="width:30px; cursor:pointer" (click)="playAudio(i.preview_url)">
+                </span>
               </td>
             </tr>
           </tbody>
