@@ -5,3 +5,10 @@ thead {color:darkmagenta}
   background-color:indigo;
   border-color: indigo;
 }
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  color: #495057;
+  background-color: #e0a6ff;
+  border-color: #dee2e6 #dee2e6 #fff;
+}

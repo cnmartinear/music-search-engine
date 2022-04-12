@@ -3,7 +3,7 @@ export interface NapsterSearchResult {
     data: {
       albums: NapsterAlbums[];
       artists: NapsterArtists[];
-      tracks: NapsterTracks[];
+      tracks: NapsterTrack[];
     };
   };
 }
@@ -16,7 +16,7 @@ export interface NapsterAlbums {
 
 export interface NapsterArtists {}
 
-export interface NapsterTracks {
+export interface NapsterTrack {
   playbackSeconds: number;
   name: string;
   href: string;

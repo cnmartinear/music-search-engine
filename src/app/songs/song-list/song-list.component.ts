@@ -1,9 +1,10 @@
 import { Component, ElementRef, Input, OnInit, ViewChild, } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { NapsterSearchResult } from '../napster';
+import { NapsterSearchResult, NapsterTrack } from '../napster';
 import { MusicService } from '../song.service';
-import { SpotifySearchResult } from '../spotify';
-import { YouTubeSearchResult } from '../youtube';
+import { SpotifyItem, SpotifySearchResult } from '../spotify';
+import { YouTubeItems, YouTubeSearchResult } from '../youtube';
+import { PageEvent } from '@angular/material/paginator'
 
 declare function authenticate(): any;
 declare function loadClient(): any;
@@ -13,7 +14,7 @@ declare function loadClient(): any;
   templateUrl: './song-list.component.html',
   styleUrls: ['./song-list.component.css'],
 })
-export class SongListComponent implements OnInit {
+export class SongListComponent {
   query: string=""
 
   @Input() item = "light";
@@ -22,8 +23,19 @@ export class SongListComponent implements OnInit {
   ytSearchResult!: YouTubeSearchResult
   spSearchResult!: SpotifySearchResult
   npSearchResult!: NapsterSearchResult
+  ytSearchResultDisplay: YouTubeItems[] = []
+  spSearchResultDisplay: SpotifyItem[] = []
+  npSearchResultDisplay: NapsterTrack[] = []
+  ytPageSize = 20;
+  spPageSize = 20;
+  npPageSize = 20;
+  ytItemCount : number = 0;
+  spItemCount : number = 0;
+  npItemCount : number = 0;
+  pageEvent : PageEvent = new PageEvent()
   errorMessage: string = ''
   sub!: Subscription
+  pageSizeOptions: number[] = [5, 10, 25, 100];
 
   private _musicService;
   private _spotifyService;
@@ -32,10 +44,6 @@ export class SongListComponent implements OnInit {
     this._musicService = musicService;
     this._spotifyService = musicService;
     this._napsterService = musicService;
-  }
-
-  ngOnInit(): void {
-    authenticate().then(loadClient());
   }
 
   search(): void {
@@ -49,7 +57,9 @@ export class SongListComponent implements OnInit {
     this._musicService.getYouTubeSearchResult(this.query).subscribe({
       next: (result) => {
         this.ytSearchResult = result;
-        console.log(this.ytSearchResult.items);
+        this.ytSearchResultDisplay = this.ytSearchResult.items.slice(0, this.ytPageSize);
+        this.ytItemCount = this.ytSearchResult.items.length;
+        console.log(this.ytSearchResultDisplay);
       },
       error: (err) => (this.errorMessage = err),
     });
@@ -59,6 +69,8 @@ export class SongListComponent implements OnInit {
     this._spotifyService.getSpotifySearchResult(this.query).subscribe({
       next: (result) => {
         this.spSearchResult = result;
+        this.spSearchResultDisplay = this.spSearchResult.tracks.items.slice(0, this.spPageSize);
+        this.spItemCount = this.spSearchResult.tracks.items.length;
         console.log(this.spSearchResult);
         console.log(this.spSearchResult.tracks);
       },
@@ -70,6 +82,8 @@ export class SongListComponent implements OnInit {
     this._napsterService.getNapsterSearchResult(this.query).subscribe({
       next: (result) => {
         this.npSearchResult = result;
+        this.npSearchResultDisplay = this.npSearchResult.search.data.tracks.slice(0, this.npPageSize);
+        this.npItemCount = this.npSearchResult.search.data.tracks.length;
         console.log(this.npSearchResult);
         console.log(this.npSearchResult.search.data.tracks);
       },
@@ -101,6 +115,24 @@ export class SongListComponent implements OnInit {
       else
         this.audioPlayer.pause();
     }
+  }
+
+  setPageSizeOptions(setPageSizeOptionsInput: string) {
+    if (setPageSizeOptionsInput) {
+      this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+    }
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.ytSearchResultDisplay = this.ytSearchResult.items.slice(event.pageIndex * this.ytPageSize, (event.pageIndex + 1) * (this.ytPageSize - 1));
+  }
+
+  handleSpotifyPageEvent(event: PageEvent){
+    this.spSearchResultDisplay = this.spSearchResult.tracks.items.slice(event.pageIndex * this.spPageSize, (event.pageIndex + 1) * (this.spPageSize - 1));
+  }
+
+  handleNapsterPageEvent(event: PageEvent){
+    this.npSearchResultDisplay = this.npSearchResult.search.data.tracks.slice(event.pageIndex * this.npPageSize, (event.pageIndex + 1) * (this.npPageSize - 1));
   }
 
   ngOnDestroy(): void {
