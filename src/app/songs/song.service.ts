@@ -14,7 +14,7 @@ export class MusicService{
   private youtubeAPI_Url : string = "";
   private spotifyAPI_Url : string = "";
   private napsterAPI_Url : string= "";
-  private spotifyBearerToken : string = "BQAFUQR8y3u6QJzffJJPXFx8yXLz-kHVZz2LpjsO2LTfQFczyURmY6QquuGMdm3kfdB6KUFnfNLkBjFiU81WSx8hS5LfYWBWtZe-YQy1NV7xiJ8QzB0kFyP2f9t6nOggMwh5RiCxx_r98ub2uazVp1b4xDWUjVvhSzo";
+  private spotifyBearerToken : string = "BQBK3TZ8s6a_ynAxk-rZArmFhx8ThufWlVEglg9_nlEaiGDK2OUA70SwUR-p4dBW-3qCfp12dcGYgwxxEA7P9u-7ketSO64eLUCKCLN3TNom1bFkja9xHI-WPVK4Iw-TyPTyH_dLo1SPn9If2R2kN25krgkZ6cOF748";
   constructor(private http:HttpClient){
 
   }
@@ -60,6 +60,10 @@ export class MusicService{
 
       console.error(errorMessage);
       return throwError(errorMessage);
+   }
+
+   private checkSpotifyAccessToken() : boolean{
+      return false;
    }
 
 }

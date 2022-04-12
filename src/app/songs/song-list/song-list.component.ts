@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { NapsterSearchResult } from '../napster';
 import { MusicService } from '../song.service';
@@ -16,10 +16,12 @@ declare function loadClient(): any;
 export class SongListComponent implements OnInit {
   query: string=""
 
-  audioPlayer! : HTMLAudioElement;
+  @Input() item = "light";
+  audioPlayer : HTMLAudioElement = new Audio();
+  showResults : boolean = false;
   ytSearchResult!: YouTubeSearchResult
   spSearchResult!: SpotifySearchResult
-  npSearchResult! : NapsterSearchResult
+  npSearchResult!: NapsterSearchResult
   errorMessage: string = ''
   sub!: Subscription
 
@@ -37,6 +39,7 @@ export class SongListComponent implements OnInit {
   }
 
   search(): void {
+    this.showResults = true;
     this.searchYoutube();
     this.searchSpotify();
     this.searchNapster();
@@ -46,7 +49,7 @@ export class SongListComponent implements OnInit {
     this._musicService.getYouTubeSearchResult(this.query).subscribe({
       next: (result) => {
         this.ytSearchResult = result;
-        console.log(this.ytSearchResult);
+        console.log(this.ytSearchResult.items);
       },
       error: (err) => (this.errorMessage = err),
     });
@@ -68,7 +71,7 @@ export class SongListComponent implements OnInit {
       next: (result) => {
         this.npSearchResult = result;
         console.log(this.npSearchResult);
-        console.log(this.npSearchResult.search.data);
+        console.log(this.npSearchResult.search.data.tracks);
       },
       error: (err) => (this.errorMessage = err),
     });

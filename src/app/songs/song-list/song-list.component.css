@@ -1,3 +1,7 @@
 thead {color:darkmagenta}
 
-.btn-success{background-color:indigo;}
+.btn-success{
+  color: #fff;
+  background-color:indigo;
+  border-color: indigo;
+}

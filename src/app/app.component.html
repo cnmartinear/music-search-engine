@@ -1,10 +1,19 @@
-<nav class="navbar navbar-light bg-light">
-  <div class="container-fluid">
-    <span><img src="/assets/images/musical notes.png" style="width:20px">  Music Search Engine</span>
+<html class="{{this.theme == 'dark' ? 'text-white bg-dark' : 'bg-light'}}">
+  <nav class="{{this.theme == 'dark' ? 'navbar navbar-dark bg-dark' : 'navbar navbar-light bg-light'}}">
+    <div class="container-fluid">
+      <span><img src="/assets/images/musical notes.png" style="width:20px"> Music Search Engine</span>
+      <label style="margin-left:90%; margin-bottom: 2px"><i class="fa fa-sun-o"></i></label>
+      <span>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="modeSwitch" [checked]="this.darkMode" (change)="toggleTheme()">
+          <label class="form-check-label" for="modeSwitch"><i class="fa fa-moon-o"></i></label>
+        </div>
+      </span>
+    </div>
+  </nav>
+  <br>
+  <div class="container">
+    <app-song-list [item]="theme"></app-song-list>
   </div>
-</nav>
-<br>
-<div class="container">
-  <app-song-list></app-song-list>
-</div>
+</html>
 

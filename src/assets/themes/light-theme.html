@@ -1,0 +1,283 @@
+<div class="container">
+  <div class="container" style="text-align:center">
+    <img id="logo" src="assets/images/echo-logo.png">
+    <div style="margin-top: -15px">
+      <img src="/assets/images/musical notes.png" style="width:20px">
+      Your favorite music search engine
+      <img src="/assets/images/musical notes.png" style="width:20px">
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="input-group">
+      <input type="search" class="form-control" placeholder="What are you looking for?" [(ngModel)]="query"
+        id="searchBar" (keyup.enter)="search()">
+    <button class="btn btn-success" (click)="search()"><img src="/assets/images/musical notes.png" style="width:20px">
+      Search</button>
+    </div>
+  <br>
+
+  <div id="searchResults"  *ngIf="this.showResults">
+      <!-- YouTube -->
+  <div class="{{item == 'dark' ? 'card border-light bg-dark' : 'card'}}">
+    <div class="card card-header">
+      <div class="mb-0">
+        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#youtubeResults" aria-expanded="false"
+          aria-controls="youtubeResults" type="button">
+          <span *ngIf="item == 'true'"><img src="/assets/images/youtube-header-logo-dark.svg" style="width:100px"></span>
+          <span *ngIf="item == 'false'"><img src="/assets/images/youtube-header-logo.png" style="width:100px"></span>
+            </button>
+        <div style="float:right"><button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#youtubeResults"
+            aria-expanded="false" aria-controls="youtubeResults" type="button">
+            {{ytSearchResult.items.length + " Results Found"}}
+          </button></div>
+      </div>
+    </div>
+    <div id="youtubeResults" class="collapse">
+      <div class="card card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Title</th>
+              <th>Channel</th>
+              <th>Length</th>
+              <th>Date Published</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let e of ytSearchResult.items">
+              <td><a href="https://youtube.com/watch?v={{e.id.videoId}}" target="_blank"><img
+                    src="/assets/images/youtube-logo.png"></a></td>
+              <td>{{e.snippet.title}}</td>
+              <td>{{e.snippet.channelTitle}}</td>
+              <td>{{e.snippet.publishTime | date }}</td>
+              <td>{{e.snippet.publishedAt | date }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Spotify -->
+  <div class="{{item == 'true' ? 'card border-light bg-dark' : 'card'}}">
+    <div class="card-header">
+      <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#spotifyResults" aria-expanded="false"
+        aria-controls="spotifyResults" type="button"><img src="/assets/images/Spotify_Logo_RGB_Green.png"
+          style="width:100px"></button>
+      <div style="float:right"><button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#spotifyResults"
+          aria-expanded="false" aria-controls="spotifyResults" type="button">
+          {{spSearchResult && spSearchResult.tracks.items.length ? spSearchResult.tracks.items.length + " Results Found"
+          : "No Results Found"}}</button></div>
+    </div>
+    <div id="spotifyResults" class="collapse">
+      <div class="card-body">
+        <table class="{{item == 'true' ? 'table table-dark' : 'table'}}">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Length</th>
+              <th>Album</th>
+              <th>Date Released</th>
+              <th>Preview</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of spSearchResult.tracks.items">
+              <td><a href="{{i.external_urls.spotify}}" target="_blank"><img src="/assets/images/spotify-logo.png"></a>
+              </td>
+              <td>{{i.name}}</td>
+              <td>{{i.artists[0].name}}</td>
+              <td>{{i.duration_ms | date:'mm:ss':'UTC'}}</td>
+              <td>{{i.album.name}}</td>
+              <td>{{i.album.release_date | date }}</td>
+              <td>
+                <span *ngIf="i.preview_url">
+                  <!-- Show "Pause" icon when current song preview is playing -->
+                  <span *ngIf="this.audioPlayer.src == i.preview_url && !this.audioPlayer.paused ">
+                    <img src="/assets/images/pause-icon.png" style="width:30px; cursor:pointer"
+                      (click)="playAudio(i.preview_url)">
+                    <img src="/assets/images/equalizer.gif" style="width:30px">
+                  </span>
+                  <span *ngIf="this.audioPlayer.src != i.preview_url || this.audioPlayer.paused">
+                    <img src="/assets/images/play-icon.png" style="width:30px; cursor:pointer"
+                      (click)="playAudio(i.preview_url)">
+                    <img src="/assets/images/equalizer.gif" style="width:30px;visibility:hidden;">
+                  </span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Napster -->
+  <div class="card">
+    <div class="card card-header">
+      <div class="mb-0">
+        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#napsterResults" aria-expanded="false"
+          aria-controls="napsterResults" type="button"><img src="/assets/images/napster-header-logo.png"
+            style="width:100px"></button>
+        <div style="float:right"><button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#napsterResults"
+            aria-expanded="false" aria-controls="napsterResults" type="button">
+            {{npSearchResult && npSearchResult.search.data.tracks.length ? npSearchResult.search.data.tracks.length + "
+            Results Found" : "No Results Found"}}</button></div>
+      </div>
+    </div>
+    <div id="napsterResults" class="collapse">
+      <div class="card card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Length</th>
+              <th>Album</th>
+              <th>Date Released</th>
+              <th>Preview</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of npSearchResult.search.data.tracks">
+              <td><a
+                  href="https://us.napster.com/artist/{{i.artistName | lowercase}}/album/{{i.albumName | lowercase}}/track/{{i.name  | lowercase}}"><img
+                    src="/assets/images/napster-logo.png" style="width:20px"></a></td>
+              <td>{{i.name}}</td>
+              <td>{{i.artistName}}</td>
+              <td>{{i.playbackSeconds | date:'mm:ss':'UTC'}}</td>
+              <td>{{i.albumName}}</td>
+              <td>{{npSearchResult.search.data.albums[0].released | date }}</td>
+              <td>
+                <span *ngIf="i.previewURL">
+                  <!-- Show "Pause" icon when current song preview is playing -->
+                  <span *ngIf="this.audioPlayer.src == i.previewURL && !this.audioPlayer.paused ">
+                    <img src="/assets/images/pause-icon.png" style="width:30px; cursor:pointer"
+                      (click)="playAudio(i.previewURL)">
+                    <img src="/assets/images/equalizer.gif" style="width:30px">
+                  </span>
+                  <span *ngIf="this.audioPlayer.src != i.previewURL || this.audioPlayer.paused">
+                    <img src="/assets/images/play-icon.png" style="width:30px; cursor:pointer"
+                      (click)="playAudio(i.previewURL)">
+                    <img src="/assets/images/equalizer.gif" style="width:30px" style="width:30px;visibility:hidden;">
+                  </span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Tidal -->
+  <div class="card">
+    <div class="card card-header">
+      <div class="mb-0">
+        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#tidalResults" aria-expanded="false"
+          aria-controls="tidalResults" type="button"><img src="/assets/images/tidal-header-logo.png"
+            style="width:100px"></button>
+        <div style="float:right"><button class="btn btn-light" data-bs-toggle="collapse" data-bs-target="#tidalResults"
+            aria-expanded="false" aria-controls="tidalResults" type="button" disabled>Coming soon!
+          </button></div>
+      </div>
+    </div>
+    <div id="tidalResults" class="collapse">
+      <div class="card card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Length</th>
+              <th>Album</th>
+              <th>Date Released</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of npSearchResult.search.data.tracks">
+              <td><img src="/assets/images/napster-logo.png" style="width:20px"></td>
+              <td colspan="5">Coming soon!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Apple Music -->
+  <div class="card">
+    <div class="card card-header">
+      <div class="mb-0">
+        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#appleResults" aria-expanded="false"
+          aria-controls="appleResults" type="button"><img src="/assets/images/apple-music-header-logo.png"
+            style="width:100px"></button>
+        <div style="float:right"><button class="btn btn-light" data-bs-toggle="collapse" data-bs-target="#appleResults"
+            aria-expanded="false" aria-controls="appleResults" type="button" disabled>Coming soon!
+          </button></div>
+      </div>
+    </div>
+    <div id="appleResults" class="collapse">
+      <div class="card card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Length</th>
+              <th>Album</th>
+              <th>Date Released</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of npSearchResult.search.data.tracks">
+              <td><img src="/assets/images/napster-logo.png" style="width:20px"></td>
+              <td colspan="5">Coming soon!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Amazon Music -->
+  <div class="card">
+    <div class="card card-header">
+      <div class="mb-0">
+        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#amazonResults" aria-expanded="false"
+          aria-controls="amazonResults" type="button"><img src="/assets/images/amazon-music-header-logo.webp"
+            style="width:100px"></button>
+        <div style="float:right"><button class="btn btn-light" data-bs-toggle="collapse" data-bs-target="#amazonResults"
+            aria-expanded="false" aria-controls="amazonResults" type="button" disabled>Coming soon!
+          </button></div>
+      </div>
+    </div>
+    <div id="amazonResults" class="collapse">
+      <div class="card card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Length</th>
+              <th>Album</th>
+              <th>Date Released</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of npSearchResult.search.data.tracks">
+              <td><img src="/assets/images/napster-logo.png" style="width:20px"></td>
+              <td colspan="5">Coming soon!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>
+  <br>
+
+</div>

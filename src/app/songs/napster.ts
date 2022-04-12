@@ -11,6 +11,7 @@ export interface NapsterSearchResult {
 export interface NapsterAlbums {
   id: string;
   name: string;
+  released: Date;
 }
 
 export interface NapsterArtists {}
@@ -22,4 +23,6 @@ export interface NapsterTracks {
   artistName: string;
   albumName: string;
   albumID: string;
+  previewURL: string;
+
 }
