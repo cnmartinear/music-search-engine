@@ -28,5 +28,10 @@ export interface YouTubeSearchResult
     liveBroadcastContent:string,
     publishTime:Date,
     publishedAt:Date,
-    title: string
+    title: string,
+    thumbnails:{
+      default: { url : string }
+      medium: { url : string }
+      high: { url : string }
+    }
  }

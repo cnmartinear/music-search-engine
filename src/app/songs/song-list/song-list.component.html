@@ -11,14 +11,15 @@
   <br>
   <div class="input-group form-outline">
     <input type="search" class="form-control {{item == 'dark' ? 'form-white text-white bg-dark' : ''}}" placeholder="What are you looking for?" [(ngModel)]="query" id="searchBar"
-      (keyup.enter)="search()">
+      (keyup.enter)="search()" autocomplete="on">
     <button class="btn btn-success" (click)="search()"><img src="/assets/images/musical notes.png" style="width:20px">
       Search</button>
   </div>
   <br>
 <br>
 <div>
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
       <button class="nav-link active" id="youtube-tab" data-bs-toggle="tab" data-bs-target="#youtube" type="button"
         role="tab" aria-controls="home" aria-selected="true">
@@ -63,42 +64,65 @@
           style="width:100px"></span></button>
     </li>
   </ul>
-  <div class="tab-content" id="myTabContent">
+  <div style="float:right; margin-top: -40px">
+    <input type="radio" class="btn-check" name="views" [(ngModel)]="view" id="listView" value="list" checked>
+    <label class="btn btn-{{item}}" for="listView"><i class="fa fa-list"></i></label>
+    <input type="radio" class="btn-check" name="views" [(ngModel)]="view" id="gridView" value="grid">
+    <label class="btn btn-{{item}}" for="gridView"><i class="fa fa-th"></i></label>
+  </div>
+  </div>
+
+  <div class="tab-content" id="myTabContent-List" >
     <div class="tab-pane fade show active" id="youtube" role="tabpanel" aria-labelledby="youtube-tab" >
       <div id="youtubeResults" >
       <div class="card-body">
-        <!-- <mat-form-field appearance="fill">
-          <mat-label>Page size options</mat-label>
-          <input matInput [ngModel]="pageSizeOptions" (ngModelChange)="setPageSizeOptions($event)"
-                 [ngModelOptions]="{updateOn: 'blur'}" placeholder="Ex. 10,25,50">
-        </mat-form-field> -->
         <mat-paginator [length]="this.ytItemCount"
                [pageSize]="ytPageSize"
                [pageSizeOptions]="[5, 10, 25, 100]"
                (page)="handlePageEvent($event)"
                aria-label="Select page">
         </mat-paginator>
-        <table class="{{item == 'dark' ? 'table table-dark' : 'table'}}">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Title</th>
-              <th>Channel</th>
-              <th>Length</th>
-              <th>Date Published</th>
-            </tr>
-          </thead>
-          <tbody  style="height:500px; overflow-y:scroll">
-            <tr *ngFor="let e of ytSearchResultDisplay">
-              <td><a href="https://youtube.com/watch?v={{e.id.videoId}}" target="_blank"><img
-                    src="/assets/images/youtube-logo.png"></a></td>
-              <td>{{e.snippet.title}}</td>
-              <td>{{e.snippet.channelTitle}}</td>
-              <td>{{e.snippet.publishTime | date }}</td>
-              <td>{{e.snippet.publishedAt | date }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="container" *ngIf="view == 'list'">
+          <table class="{{item == 'dark' ? 'table table-dark' : 'table'}}">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Channel</th>
+                <th>Length</th>
+                <th>Date Published</th>
+              </tr>
+            </thead>
+            <tbody  style="height:500px; overflow-y:scroll">
+              <tr *ngFor="let e of ytSearchResultDisplay">
+                <td><a href="https://youtube.com/watch?v={{e.id.videoId}}" target="_blank"><img
+                      src="/assets/images/youtube-logo.png"></a></td>
+                <td>{{e.snippet.title}}</td>
+                <td>{{e.snippet.channelTitle}}</td>
+                <td>{{e.snippet.publishTime | date }}</td>
+                <td>{{e.snippet.publishedAt | date }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="container" *ngIf="view == 'grid'">
+          <div class="row" >
+            <div class="col-lg" *ngFor="let e of ytSearchResultDisplay">
+              <div class="card" style="margin:5px">
+                <div style="margin:20px">
+                  <a href="https://youtube.com/watch?v={{e.id.videoId}}" target="_blank"><img
+                    src="{{e.snippet.thumbnails.medium.url}}" class="thumbnail-grid"></a>
+                    <label><b>{{e.snippet.title}}</b></label>
+                    <p>{{e.snippet.channelTitle}}</p>
+                    <br>
+                    {{e.snippet.publishTime | date }}
+                </div>
+                <!--
+                {{e.snippet.publishedAt | date }} -->
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div></div>
     <div class="tab-pane fade" id="spotify" role="tabpanel" aria-labelledby="spotify-tab">
@@ -107,49 +131,70 @@
         <mat-paginator [length]="this.spItemCount"
         [pageSize]="spPageSize"
         [pageSizeOptions]="[5, 10, 25, 100]"
-        (page)="handleSpotifyPageEvent($event)"
+        (page)="handlePageEvent($event)"
         aria-label="Select page">
         </mat-paginator>
-        <table class="{{item == 'dark' ? 'table table-dark' : 'table'}}">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Title</th>
-              <th>Artist</th>
-              <th>Length</th>
-              <th>Album</th>
-              <th>Date Released</th>
-              <th>Preview</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let i of spSearchResultDisplay">
-              <td><a href="{{i.external_urls.spotify}}" target="_blank"><img
-                    src="/assets/images/spotify-logo.png"></a>
-              </td>
-              <td>{{i.name}}</td>
-              <td>{{i.artists[0].name}}</td>
-              <td>{{i.duration_ms | date:'mm:ss':'UTC'}}</td>
-              <td>{{i.album.name}}</td>
-              <td>{{i.album.release_date | date }}</td>
-              <td>
-                <span *ngIf="i.preview_url">
-                  <!-- Show "Pause" icon when current song preview is playing -->
-                  <span *ngIf="this.audioPlayer.src == i.preview_url && !this.audioPlayer.paused ">
-                    <img src="/assets/images/pause-icon.png" style="width:30px; cursor:pointer"
-                      (click)="playAudio(i.preview_url)">
-                    <img src="/assets/images/equalizer.gif" style="width:30px">
+        <div class="container" *ngIf="view == 'list'">
+          <table class="{{item == 'dark' ? 'table table-dark' : 'table'}}">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Length</th>
+                <th>Album</th>
+                <th>Date Released</th>
+                <th>Preview</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let i of spSearchResultDisplay">
+                <td><a href="{{i.external_urls.spotify}}" target="_blank"><img
+                      src="/assets/images/spotify-logo.png"></a>
+                </td>
+                <td>{{i.name}}</td>
+                <td>{{i.artists[0].name}}</td>
+                <td>{{i.duration_ms | date:'mm:ss':'UTC'}}</td>
+                <td>{{i.album.name}}</td>
+                <td>{{i.album.release_date | date }}</td>
+                <td>
+                  <span *ngIf="i.preview_url">
+                    <!-- Show "Pause" icon when current song preview is playing -->
+                    <span *ngIf="this.audioPlayer.src == i.preview_url && !this.audioPlayer.paused ">
+                      <img src="/assets/images/pause-icon.png" style="width:30px; cursor:pointer"
+                        (click)="playAudio(i.preview_url)">
+                      <img src="/assets/images/equalizer.gif" style="width:30px">
+                    </span>
+                    <span *ngIf="this.audioPlayer.src != i.preview_url || this.audioPlayer.paused">
+                      <img src="/assets/images/play-icon.png" style="width:30px; cursor:pointer"
+                        (click)="playAudio(i.preview_url)">
+                      <img src="/assets/images/equalizer.gif" style="width:30px;visibility:hidden;">
+                    </span>
                   </span>
-                  <span *ngIf="this.audioPlayer.src != i.preview_url || this.audioPlayer.paused">
-                    <img src="/assets/images/play-icon.png" style="width:30px; cursor:pointer"
-                      (click)="playAudio(i.preview_url)">
-                    <img src="/assets/images/equalizer.gif" style="width:30px;visibility:hidden;">
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="container" *ngIf="view == 'grid'">
+          <div class="row" >
+            <div class="col-lg" *ngFor="let i of spSearchResultDisplay">
+              <div class="card" style="margin:5px">
+                <div style="margin:20px">
+                  <a href="{{i.external_urls.spotify}}" target="_blank"><img
+                    src="/assets/images/spotify-logo.png" class="thumbnail-grid"></a>
+                    <label><b>{{i.name}}</b></label>
+                    <p>{{i.artists[0].name}}</p>
+                    <label>{{i.duration_ms | date:'mm:ss':'UTC'}}</label>
+                    <label>{{i.album.name}}</label>
+                    <label>{{i.album.release_date | date }}</label>
+                </div>
+                <!--
+                {{e.snippet.publishedAt | date }} -->
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div></div>
     <div class="tab-pane fade" id="napster" role="tabpanel" aria-labelledby="napster-tab">
@@ -202,8 +247,10 @@
           </tbody>
         </table>
       </div>
-    </div></div>
-    <div class="tab-pane fade" id="tidal" role="tabpanel" aria-labelledby="tidal-tab">Coming soon!</div>
+    </div>
+
+  </div>
+    <div class="tab-pane fade" id="tidal" role="tabpanel" aria-labelledby="tidal-tab"><app-napster></app-napster></div>
     <div class="tab-pane fade" id="apple-music" role="tabpanel" aria-labelledby="apple-tab">Coming soon!</div>
     <div class="tab-pane fade" id="amazon-music" role="tabpanel" aria-labelledby="amazon-tab">Coming soon!</div>
   </div>

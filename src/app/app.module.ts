@@ -9,11 +9,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SongListComponent } from './songs/song-list/song-list.component';
+import { NapsterComponent } from './songs/song-list/napster/napster.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SongListComponent,
+    NapsterComponent,
   ],
   imports: [
     BrowserModule,

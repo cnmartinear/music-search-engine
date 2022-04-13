@@ -12,3 +12,25 @@ thead {color:darkmagenta}
   background-color: #e0a6ff;
   border-color: #dee2e6 #dee2e6 #fff;
 }
+
+.icon{
+ width:30px;
+}
+
+.btn-check:checked+.btn-light {
+  color: #fff;
+  background-color: indigo;
+  border-color: indigo;
+}
+
+.btn-check:checked+.btn-dark {
+  color: #fff;
+  background-color: indigo;
+  border-color: indigo;
+}
+
+.thumbnail-grid{
+  width: 320px;
+  height: 180px;
+}
+

@@ -14,7 +14,7 @@ export class MusicService{
   private youtubeAPI_Url : string = "";
   private spotifyAPI_Url : string = "";
   private napsterAPI_Url : string= "";
-  private spotifyBearerToken : string = "BQCYOt3SSccWyAFdBHZWtf9Vymq3g3d7Buw-TxMZ7jePKxss65HRM1yOnl14Op7kGeFmSfyXol7QGI0HTUvTNXvAZ25cOBxRp2tAncdHJS7fbHAAFzbnI_Y3Dzpf8uq1EB8ei6gapblB5jFBvB-ALIC_omzIio1n94g";
+  private spotifyBearerToken : string = "BQCsZmVk_VUWseJF4XkIHOJdiLqMLlsCrQrlV8ce7b8H_7ipnOLR-POUw2kZtYQXa2aO73bDEFIJvoPK4vg68uiAmfcBCp38LsYnBtOo8_ZPWyK4AKlPe64h3dV0UovNTIsveYp1YEaHrBo7302sI_NRw3rGrtFytHw";
   constructor(private http:HttpClient){
 
   }

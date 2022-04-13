@@ -1,0 +1,50 @@
+<div id="napsterResults"  *ngIf="searchResult">
+  <div class="card-body">
+    <mat-paginator [length]="this.itemCount"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    (page)="handlePageEvent($event)"
+    aria-label="Select page">
+    </mat-paginator>
+    <table class="{{item == 'dark' ? 'table table-dark' : 'table'}}">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Title</th>
+          <th>Artist</th>
+          <th>Length</th>
+          <th>Album</th>
+          <th>Date Released</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of searchResultDisplay">
+          <td><a
+              href="https://us.napster.com/artist/{{i.artistName | lowercase}}/album/{{i.albumName | lowercase}}/track/{{i.name  | lowercase}}"><img
+                src="/assets/images/napster-logo.png" style="width:20px"></a></td>
+          <td>{{i.name}}</td>
+          <td>{{i.artistName}}</td>
+          <td>{{i.playbackSeconds | date:'mm:ss':'UTC'}}</td>
+          <td>{{i.albumName}}</td>
+          <td>{{searchResult.search.data.albums[0].released | date }}</td>
+          <td>
+            <span *ngIf="i.previewURL">
+              <!-- Show "Pause" icon when current song preview is playing -->
+              <span *ngIf="this.audioPlayer.src == i.previewURL && !this.audioPlayer.paused ">
+                <img src="/assets/images/pause-icon.png" style="width:30px; cursor:pointer"
+                  (click)="playAudio(i.previewURL)">
+                <img src="/assets/images/equalizer.gif" style="width:30px">
+              </span>
+              <span *ngIf="this.audioPlayer.src != i.previewURL || this.audioPlayer.paused">
+                <img src="/assets/images/play-icon.png" style="width:30px; cursor:pointer"
+                  (click)="playAudio(i.previewURL)">
+                <img src="/assets/images/equalizer.gif" style="width:30px" style="width:30px;visibility:hidden;">
+              </span>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

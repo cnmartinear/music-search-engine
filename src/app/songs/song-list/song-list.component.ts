@@ -5,45 +5,56 @@ import { MusicService } from '../song.service';
 import { SpotifyItem, SpotifySearchResult } from '../spotify';
 import { YouTubeItems, YouTubeSearchResult } from '../youtube';
 import { PageEvent } from '@angular/material/paginator'
-
-declare function authenticate(): any;
-declare function loadClient(): any;
+import { NapsterComponent } from '../song-list/napster/napster.component'
 
 @Component({
   selector: 'app-song-list',
   templateUrl: './song-list.component.html',
   styleUrls: ['./song-list.component.css'],
 })
-export class SongListComponent {
+export class SongListComponent implements OnInit{
   query: string=""
 
   @Input() item = "light";
+
+  view : string = "list";
+
   audioPlayer : HTMLAudioElement = new Audio();
   showResults : boolean = false;
   ytSearchResult!: YouTubeSearchResult
   spSearchResult!: SpotifySearchResult
   npSearchResult!: NapsterSearchResult
+
   ytSearchResultDisplay: YouTubeItems[] = []
   spSearchResultDisplay: SpotifyItem[] = []
   npSearchResultDisplay: NapsterTrack[] = []
-  ytPageSize = 20;
-  spPageSize = 20;
-  npPageSize = 20;
+
+  ytPageSize = 25;
+  spPageSize = 25;
+  npPageSize = 25;
+
   ytItemCount : number = 0;
   spItemCount : number = 0;
   npItemCount : number = 0;
+
   pageEvent : PageEvent = new PageEvent()
   errorMessage: string = ''
   sub!: Subscription
   pageSizeOptions: number[] = [5, 10, 25, 100];
 
+  napster! : NapsterComponent;
+
+
+
   private _musicService;
   private _spotifyService;
   private _napsterService;
+
   constructor(musicService: MusicService) {
     this._musicService = musicService;
     this._spotifyService = musicService;
     this._napsterService = musicService;
+    this.napster = new NapsterComponent(musicService);
   }
 
   search(): void {
@@ -51,6 +62,7 @@ export class SongListComponent {
     this.searchYoutube();
     this.searchSpotify();
     this.searchNapster();
+    this.napster.search(this.query);
   }
 
   searchYoutube(): void {
@@ -133,6 +145,14 @@ export class SongListComponent {
 
   handleNapsterPageEvent(event: PageEvent){
     this.npSearchResultDisplay = this.npSearchResult.search.data.tracks.slice(event.pageIndex * this.npPageSize, (event.pageIndex + 1) * (this.npPageSize - 1));
+  }
+
+  toggleView(view : string){
+    this.view = view;
+  }
+
+  ngOnInit(): void {
+    //this.toggleView(this.view);
   }
 
   ngOnDestroy(): void {

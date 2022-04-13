@@ -32,5 +32,8 @@ export interface SpotifyArtist
 {
   href: string,
   id: string,
-  name: string
+  name: string,
+  images: {
+    url: string
+  }
 }
