@@ -14,7 +14,7 @@ export class MusicService{
   private youtubeAPI_Url : string = "";
   private spotifyAPI_Url : string = "";
   private napsterAPI_Url : string= "";
-  private spotifyBearerToken : string = "BQCsZmVk_VUWseJF4XkIHOJdiLqMLlsCrQrlV8ce7b8H_7ipnOLR-POUw2kZtYQXa2aO73bDEFIJvoPK4vg68uiAmfcBCp38LsYnBtOo8_ZPWyK4AKlPe64h3dV0UovNTIsveYp1YEaHrBo7302sI_NRw3rGrtFytHw";
+  private spotifyBearerToken : string = "BQDnX8GqL36o5-alYKymqjJEW1A-3tAvDvACO0SQ2ztzGqie5mXwV-7nx7aPNsY50m69-iMQP_Yb9tnmXRPNDNnLvU-HskEtnAPlhegwG67z-nxvNSpkrwbvQncJ2FIKmCuDpVqNb6BOuyA2UDFsvDG98hg0HXqzArE";
   constructor(private http:HttpClient){
 
   }
@@ -35,8 +35,7 @@ export class MusicService{
       'Authorization': 'Bearer ' + this.spotifyBearerToken
     })
      return this.http.get<SpotifySearchResult>(this.spotifyAPI_Url, {headers: headers}).pipe(
-       tap(data => console.log('All', JSON.stringify(data))),
-       catchError(this.handleError));
+       tap(data => console.log('All', JSON.stringify(data))));
    }
 
    getNapsterSearchResult(query:string) : Observable<NapsterSearchResult> {
@@ -50,7 +49,7 @@ export class MusicService{
    }
 
    private handleError(err : HttpErrorResponse){
-      let errorMessage = '';
+      let errorMessage = `An error occurred: ${err.message}`;
       if (err.error instanceof ErrorEvent){
         errorMessage = `An error occurred: ${err.error.message}`;
       }
@@ -62,8 +61,10 @@ export class MusicService{
       return throwError(errorMessage);
    }
 
-   private checkSpotifyAccessToken() : boolean{
-      return false;
+   getNewSpotifyAccessToken() : string {
+      let code = "";
+     //let refreshTokenURL = 'https://api.spotify.com/v1/swap?code=' +
+      return code;
    }
 
 }

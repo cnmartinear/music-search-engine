@@ -10,12 +10,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SongListComponent } from './songs/song-list/song-list.component';
 import { NapsterComponent } from './songs/song-list/napster/napster.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SongListComponent,
     NapsterComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

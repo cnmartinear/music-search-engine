@@ -26,14 +26,19 @@ export interface SpotifyAlbum
   artists: SpotifyArtist[]
   release_date: Date
   name: string
+  images: SpotifyImage[]
 }
 
 export interface SpotifyArtist
 {
   href: string,
   id: string,
-  name: string,
-  images: {
-    url: string
-  }
+  name: string
+}
+
+export interface SpotifyImage
+{
+  url : string;
+  height: string;
+  width: string;
 }

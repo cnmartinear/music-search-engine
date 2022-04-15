@@ -6,6 +6,7 @@ import { SpotifyItem, SpotifySearchResult } from '../spotify';
 import { YouTubeItems, YouTubeSearchResult } from '../youtube';
 import { PageEvent } from '@angular/material/paginator'
 import { NapsterComponent } from '../song-list/napster/napster.component'
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-song-list',
@@ -50,7 +51,7 @@ export class SongListComponent implements OnInit{
   private _spotifyService;
   private _napsterService;
 
-  constructor(musicService: MusicService) {
+  constructor(musicService: MusicService, private route : ActivatedRoute) {
     this._musicService = musicService;
     this._spotifyService = musicService;
     this._napsterService = musicService;
@@ -86,7 +87,12 @@ export class SongListComponent implements OnInit{
         console.log(this.spSearchResult);
         console.log(this.spSearchResult.tracks);
       },
-      error: (err) => (this.errorMessage = err),
+      error: (err) => {
+        let status = Number(err.error.error.status);
+        if (status == 401){
+
+        }
+      },
     });
   }
 
@@ -152,7 +158,12 @@ export class SongListComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    //this.toggleView(this.view);
+    this.route.queryParams.subscribe(params => {
+      this.query = params['query'];
+      this.search();
+
+
+    })
   }
 
   ngOnDestroy(): void {

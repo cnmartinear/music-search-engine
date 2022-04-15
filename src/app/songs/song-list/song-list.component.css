@@ -6,11 +6,9 @@ thead {color:darkmagenta}
   border-color: indigo;
 }
 
-.nav-tabs .nav-link.active,
-.nav-tabs .nav-item.show .nav-link {
-  color: #495057;
-  background-color: #e0a6ff;
-  border-color: #dee2e6 #dee2e6 #fff;
+.tile {
+  width:340px;
+  height: 430px;
 }
 
 .icon{
@@ -32,5 +30,10 @@ thead {color:darkmagenta}
 .thumbnail-grid{
   width: 320px;
   height: 180px;
+}
+
+.tab-image{
+  width:100px;
+  max-height: 25px;
 }
 

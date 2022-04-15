@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="container" style="text-align:center">
+    <img id="logo" src="assets/images/echo-logo.png">
+    <div style="margin-top: -15px">
+      <img src="/assets/images/musical notes.png" style="width:20px">
+      Your favorite music search engine
+      <img src="/assets/images/musical notes.png" style="width:20px">
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="input-group form-outline">
+    <input type="search" class="form-control {{item == 'dark' ? 'form-white text-white bg-dark' : ''}}"
+      placeholder="What are you looking for?" [(ngModel)]="query" id="searchBar"
+      autocomplete="on">
+    <button class="btn btn-success" (click)="search()"><img src="/assets/images/musical notes.png" style="width:20px">
+      Search</button>
+  </div>
+</div>
+
