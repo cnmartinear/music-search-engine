@@ -4,9 +4,10 @@ import { PageEvent } from '@angular/material/paginator'
 import { MusicService } from '../../song.service';
 
 @Component({
-  selector: 'app-napster',
-  templateUrl: './napster.component.html',
-  styleUrls: ['./napster.component.css']
+    selector: 'app-napster',
+    templateUrl: './napster.component.html',
+    styleUrls: ['./napster.component.css'],
+    standalone: false
 })
 export class NapsterComponent{
   @Input() item = "light";

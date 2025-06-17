@@ -9,9 +9,10 @@ import { NapsterComponent } from '../song-list/napster/napster.component'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
-  selector: 'app-song-list',
-  templateUrl: './song-list.component.html',
-  styleUrls: ['./song-list.component.css'],
+    selector: 'app-song-list',
+    templateUrl: './song-list.component.html',
+    styleUrls: ['./song-list.component.css'],
+    standalone: false
 })
 export class SongListComponent implements OnInit{
   query: string=""
