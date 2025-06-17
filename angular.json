@@ -67,12 +67,15 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "music-search-engine:build"
+          },
           "configurations": {
             "production": {
-              "browserTarget": "music-search-engine:build:production"
+              "buildTarget": "music-search-engine:build:production"
             },
             "development": {
-              "browserTarget": "music-search-engine:build:development"
+              "buildTarget": "music-search-engine:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -107,5 +110,8 @@
       }
     }
   },
-  "defaultProject": "music-search-engine"
+  "defaultProject": "music-search-engine",
+  "cli": {
+    "analytics": "7d774e13-ee3e-429d-a733-219abc26eaaa"
+  }
 }
