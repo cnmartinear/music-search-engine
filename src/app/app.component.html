@@ -2,9 +2,9 @@
   <nav class="{{this.theme == 'dark' ? 'navbar navbar-dark bg-dark' : 'navbar navbar-light bg-light'}}">
     <div class="container-fluid ">
       <span><img src="/assets/images/musical notes.png" style="width:20px"> Music Search Engine</span>
-      <label style="margin-left:90%; margin-bottom: 2px"><i class="fa fa-sun-o"></i></label>
-      <span>
-        <div class="form-check form-switch">
+      <span class="d-flex align-items-center">
+        <label class="form-check-label" style="margin-right: 5px; margin-bottom: 3px" for="modeSwitchContainer"><i class="fa fa-sun-o"></i></label>
+        <div class="form-check form-switch" id="modeSwitchContainer">
           <input class="form-check-input" type="checkbox" role="switch" id="modeSwitch" [checked]="this.darkMode" (change)="toggleTheme()">
           <label class="form-check-label" for="modeSwitch"><i class="fa fa-moon-o"></i></label>
         </div>

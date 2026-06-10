@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "music-search-engine:build"
+            "buildTarget": "music-search-engine:build"
           }
         },
         "test": {
@@ -110,7 +110,7 @@
       }
     }
   },
-  "defaultProject": "music-search-engine",
+
   "cli": {
     "analytics": "7d774e13-ee3e-429d-a733-219abc26eaaa"
   }

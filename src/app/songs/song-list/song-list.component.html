@@ -1,4 +1,4 @@
-<div style="margin-left:5rem; margin-right:50rem">
+<div style="margin: 25px">
   <span>
     <img id="logo" src="assets/images/echo-logo.png">
     <span class="input-group form-outline">
@@ -100,13 +100,13 @@
             </div>
             <div *ngIf="view == 'grid'">
               <div class="row">
-                <div class="col-lg" *ngFor="let e of ytSearchResultDisplay">
-                  <div class="card bg-{{item}} tile" style="margin:5px">
-                    <div style="margin:20px">
+                <div class="col-lg" style="margin: 15px;" *ngFor="let e of ytSearchResultDisplay">
+                  <div class="card bg-{{item}} tile" style="width: 18rem; margin:5px; height: 100%;">
+                    <div style="margin:15px">
                       <a href="https://youtube.com/watch?v={{e.id.videoId}}" target="_blank"
                         alt="Watch video on YouTube"><img src="{{e.snippet.thumbnails.medium.url}}"
-                          class="thumbnail-grid"></a>
-                      <label><b>{{e.snippet.title}}</b></label>
+                          class="thumbnail-grid" style="width: 100%; height: auto;"></a>
+                      <label><b>{{e.snippet.title}}</b></label>25
                       <p>{{e.snippet.channelTitle}}</p>
                       <br>
                       {{e.snippet.publishTime | date }}
